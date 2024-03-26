@@ -1,0 +1,38 @@
+
+bartlett test
+bartlett p = 0.00000000000000000000 
+
+welch Nll grouped by binary funding: 
+   Source  ddof1       ddof2         F     p-unc       np2
+0  F_none      1  210.697026  1.259829  0.262961  0.004234
+
+welch Nlh grouped by binary funding: 
+   Source  ddof1       ddof2         F     p-unc       np2
+0  F_none      1  154.669693  4.617301  0.033207  0.019178
+
+welch Nhh grouped by binary funding: 
+   Source  ddof1       ddof2         F     p-unc       np2
+0  F_none      1  294.891199  1.529588  0.217158  0.003925
+
+Games Howell pairwise test: 
+   A  B   mean(A)   mean(B)      diff        se         T          df      pval    hedges
+0  0  1  4.638889  2.020101  2.618788  1.218727  2.148791  154.669693  0.033207  0.291147
+
+n-way ANOVA on Nlh:
+                           Source            SS    DF          MS         F     p-unc       np2
+0                           F_Gov    918.414043   1.0  918.414043  7.486752  0.007380  0.070973
+1                      F_Industry      3.212684   1.0    3.212684  0.026189  0.871772  0.000267
+2                       F_Charity    762.294063   1.0  762.294063  6.214089  0.014350  0.059628
+3              F_Gov * F_Industry     65.102762   1.0   65.102762  0.530706  0.468047  0.005386
+4               F_Gov * F_Charity    420.725212   1.0  420.725212  3.429679  0.067045  0.033813
+5          F_Industry * F_Charity     12.879417   1.0   12.879417  0.104991  0.746611  0.001070
+6  F_Gov * F_Industry * F_Charity      1.948696   1.0    1.948696  0.015885  0.899961  0.000162
+7                        Residual  12021.845882  98.0  122.671897       NaN       NaN       NaN
+
+post-hoc Tukey for F_Gov: 
+        A           B   mean(A)   mean(B)      diff        se         T   p-tukey    hedges
+0  Funded  Not Funded  8.292683  2.402985  5.889698  2.213894  2.660335  0.009019  0.523754
+
+post-hoc Tukey for F_Charity: 
+        A           B   mean(A)   mean(B)      diff        se         T   p-tukey    hedges
+0  Funded  Not Funded  6.842105  2.176471  4.665635  2.176106  2.144029  0.034316  0.410326

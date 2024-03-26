@@ -263,7 +263,7 @@ Ucountry=list(np.sort(Ucountry))
 # =============================================================================
 # define save array
 # =============================================================================
-savearr = [1,1,1,1,1,];
+savearr = [0,0,0,1,0];
 # savearr=[0,0,0,0,0]; #2,3,4,5 save
 # savearr=[0,0,0,0,0]; #2,3,4,5 save
 
@@ -299,7 +299,7 @@ df=df_1985_2020;# just to make it clean
 # =============================================================================
 if savearr[0]==1:
     
-    figname="F2_2-N_yrs";
+    figname="F2_resub";
     
     #init df
     N=pd.DataFrame(data=None,index=yrs,columns=["Nlh","Nhh","Nll"])
@@ -316,117 +316,74 @@ if savearr[0]==1:
     c_Nlh="#9900ff";
     c_Nhh="#980000ff";
     
-    fig, ax = plt.subplots(ncols=2, nrows=3, sharex='col',figsize=(10,10),
-                           sharey='row',gridspec_kw={'width_ratios': [1.7, 1]})
+    fig, ax = plt.subplots(ncols=1, nrows=3, sharex='col',figsize=(6,10),)
   
+    
     ### A
-    ax[0,0].plot(yrs,count['count'].to_list(),'-o',color='k',linewidth=1.5,label='count');
-    ax[0,0].legend(loc='upper center',fontsize=16,ncol=3,)
-    
-    ax[0,0].set_xticks(np.arange(np.min(yrs),np.max(yrs),1),minor=True,
-                     color='k',alpha=0.2,linewidth=0.5);
-    ax[0,0].set_xticks(np.arange(np.min(yrs),np.max(yrs)+5,5),minor=False,
-                     color='k',alpha=0.5,linewidth=1);
-    l,r = ax[0,0].get_xlim()
-    b,t = ax[0,0].get_ylim()
-    ax[0,0].text(0.02*(r-l)+l,t-0.08*(t-b),'A',fontsize=20,ha='left',va='top',
-               backgroundcolor="#d6e1ff")
-    
-    ax[0,0].set_ylabel('number of manuscripts by year')
-    ax[0,0].grid(True, 'major',color='k',alpha=0.3,linewidth=1)
-    ax[0,0].grid(True, 'minor',color='k',alpha=0.2,linewidth=0.5)
-    
-    ### B
-    ax[0,1].plot(yrs,count['count'].to_list(),'-o',color='k',linewidth=1.5,label='count');
+    ax[0].plot(yrs,count['count'].to_list(),'-o',color='k',linewidth=1.5,label='count');
     # ax[0,1].legend(loc='upper center',fontsize=16,ncol=3,)
     
-    ax[0,1].set_xticks(np.arange(np.min(yrs),np.max(yrs),1),minor=True,
+    ax[0].set_xticks(np.arange(np.min(yrs),np.max(yrs),1),minor=True,
                       color='k',alpha=0.2,linewidth=0.5);
-    ax[0,1].set_xticks(np.arange(np.min(yrs),np.max(yrs)+5,5),minor=False,
+    ax[0].set_xticks(np.arange(np.min(yrs),np.max(yrs)+5,5),minor=False,
                       color='k',alpha=0.5,linewidth=1);
-    ax[0,1].set_xlim(left=2009.5,right=2020.5);
-    l,r = ax[0,1].get_xlim()
-    b,t = ax[0,1].get_ylim()
-    ax[0,1].text(0.04*(r-l)+l,t-0.08*(t-b),'B',fontsize=20,ha='left',va='top',
+    ax[0].set_xlim(left=2009.5,right=2020.5);
+    l,r = ax[0].get_xlim()
+    b,t = ax[0].get_ylim()
+    ax[0].text(0.04*(r-l)+l,t-0.08*(t-b),'A',fontsize=20,ha='left',va='top',
                backgroundcolor="#d6e1ff")
     
-    ax[0,1].grid(True, 'major',color='k',alpha=0.3,linewidth=1)
-    ax[0,1].grid(True, 'minor',color='k',alpha=0.2,linewidth=0.5)
+    ax[0].grid(True, 'major',color='k',alpha=0.3,linewidth=1)
+    ax[0].grid(True, 'minor',color='k',alpha=0.2,linewidth=0.5)
+    ax[0].set_ylabel('number of manuscripts by year')
+    ax[0].legend(loc='upper center',fontsize=16,ncol=3,)
     
-
+    
+    ### B
+    ax[1].plot(N.index,N.Nlh,'-o',color=c_Nlh,linewidth=1.5,label='LMIC-HIC')
+    ax[1].plot(N.index,N.Nll,'-o',color=c_Nll,linewidth=1.5,label='LMIC-LMIC')
+    ax[1].plot(N.index,N.Nhh,'-o',color=c_Nhh,linewidth=1.5,label='HIC-HIC')
+    ax[1].set_xticks(np.arange(np.min(yrs),np.max(yrs),1),minor=True,
+                     color='k',alpha=0.2,linewidth=0.5);
+    ax[1].set_xticks(np.arange(np.min(yrs),np.max(yrs)+5,5),minor=False,
+                     color='k',alpha=0.5,linewidth=1);
+    ax[1].set_xlim(left=2009.5,right=2020.5);
+    ax[1].legend(loc='upper center',fontsize=16,ncol=1,)
+    ax[1].set_ylabel('global coauthorship connections')
+    
+    l,r = ax[1].get_xlim()
+    b,t = ax[1].get_ylim()
+    ax[1].text(0.04*(r-l)+l,t-0.08*(t-b),'B',fontsize=20,ha='left',va='top',
+               backgroundcolor="#d6e1ff")
+    ax[1].grid(True, 'major',color='k',alpha=0.3,linewidth=1)
+    ax[1].grid(True, 'minor',color='k',alpha=0.2,linewidth=0.5)
+    
+    
     ### C
-    ax[1,0].plot(N.index,N.Nlh,'-o',color=c_Nlh,linewidth=1.5,label=r'$N_{l,h}$')
-    ax[1,0].plot(N.index,N.Nll,'-o',color=c_Nll,linewidth=1.5,label=r'$N_{l,l}$')
-    ax[1,0].plot(N.index,N.Nhh,'-o',color=c_Nhh,linewidth=1.5,label=r'$N_{h,h}$')
-    ax[1,0].legend(loc='upper center',fontsize=16,ncol=3,)
-    ax[1,0].set_xticks(np.arange(np.min(yrs),np.max(yrs),1),minor=True,
-                     color='k',alpha=0.2,linewidth=0.5);
-    ax[1,0].set_xticks(np.arange(np.min(yrs),np.max(yrs)+5,5),minor=False,
-                     color='k',alpha=0.5,linewidth=1);
-    l,r = ax[1,0].get_xlim()
-    b,t = ax[1,0].get_ylim()
-    ax[1,0].text(0.02*(r-l)+l,t-0.08*(t-b),'C',fontsize=20,ha='left',va='top',
-               backgroundcolor="#d6e1ff")
-    ax[1,0].set_ylabel('global coauthorship connections')
-    ax[1,0].grid(True, 'major',color='k',alpha=0.3,linewidth=1)
-    ax[1,0].grid(True, 'minor',color='k',alpha=0.2,linewidth=0.5)
-    
-    
-    ### D
-    ax[1,1].plot(N.index,N.Nlh,'-o',color=c_Nlh,linewidth=1.5,label=r'$N_{l,h}$')
-    ax[1,1].plot(N.index,N.Nll,'-o',color=c_Nll,linewidth=1.5,label=r'$N_{l,l}$')
-    ax[1,1].plot(N.index,N.Nhh,'-o',color=c_Nhh,linewidth=1.5,label=r'$N_{h,h}$')
-    ax[1,1].set_xticks(np.arange(np.min(yrs),np.max(yrs),1),minor=True,
-                     color='k',alpha=0.2,linewidth=0.5);
-    ax[1,1].set_xticks(np.arange(np.min(yrs),np.max(yrs)+5,5),minor=False,
-                     color='k',alpha=0.5,linewidth=1);
-    ax[1,1].set_xlim(left=2009.5,right=2020.5);
-    
-    l,r = ax[1,1].get_xlim()
-    b,t = ax[1,1].get_ylim()
-    ax[1,1].text(0.04*(r-l)+l,t-0.08*(t-b),'D',fontsize=20,ha='left',va='top',
-               backgroundcolor="#d6e1ff")
-    ax[1,1].grid(True, 'major',color='k',alpha=0.3,linewidth=1)
-    ax[1,1].grid(True, 'minor',color='k',alpha=0.2,linewidth=0.5)
-    
-    
-    ### E
     melt=pd.melt(df,value_vars=["Nlh","Nhh","Nll"],id_vars=["Publication year"])
     melt=melt.loc[melt["Publication year"]<2021,:]# avoid 2021 cus incomplete
-    sns.lineplot(data=melt,x="Publication year",y="value",hue="variable", 
-                 ax=ax[2,0],legend=None,palette=[c_Nlh,c_Nhh,c_Nll],)
-    
-    
-    ax[2,0].set_xticks(np.arange(np.min(yrs),np.max(yrs),1),minor=True,
-                     color='k',alpha=0.2,linewidth=0.5);
-    ax[2,0].set_xticks(np.arange(np.min(yrs),np.max(yrs)+5,5),minor=False,
-                     color='k',alpha=0.5,linewidth=1);
-    l,r = ax[2,0].get_xlim()
-    b,t = ax[2,0].get_ylim()
-    ax[2,0].text(0.02*(r-l)+l,t-0.08*(t-b),'E',fontsize=20,ha='left',va='top',
-               backgroundcolor="#d6e1ff")
-    ax[2,0].set_ylabel('average individual connections')
-    ax[2,0].grid(True, 'major',color='k',alpha=0.3,linewidth=1)
-    ax[2,0].grid(True, 'minor',color='k',alpha=0.2,linewidth=0.5)
-    ax[2,0].set_ylim(b,t)
     
     ### F
     sns.lineplot(data=melt,x="Publication year",y="value",hue="variable", 
-                 ax=ax[2,1],legend=None,palette=[c_Nlh,c_Nhh,c_Nll],)
+                 ax=ax[2],legend=None,palette=[c_Nlh,c_Nhh,c_Nll],)
 
-    ax[2,1].set_xticks(np.arange(np.min(yrs),np.max(yrs),1),minor=True,
+    ax[2].set_xticks(np.arange(np.min(yrs),np.max(yrs),1),minor=True,
                      color='k',alpha=0.2,linewidth=0.5);
-    ax[2,1].set_xticks(np.arange(np.min(yrs),np.max(yrs)+5,5),minor=False,
+    ax[2].set_xticks(np.arange(np.min(yrs),np.max(yrs)+5,5),minor=False,
                      color='k',alpha=0.5,linewidth=1);
-    ax[2,1].set_xlim(left=2009.5,right=2020.5);
+    ax[2].set_xlim(left=2009.5,right=2020.5);
     
-    ax[2,1].grid(True, 'major',color='k',alpha=0.3,linewidth=1)
-    ax[2,1].grid(True, 'minor',color='k',alpha=0.2,linewidth=0.5)
+    ax[2].grid(True, 'major',color='k',alpha=0.3,linewidth=1)
+    ax[2].grid(True, 'minor',color='k',alpha=0.2,linewidth=0.5)
     
-    l,r = ax[2,1].get_xlim()
-    b,t = ax[2,1].get_ylim()
-    ax[2,1].text(0.04*(r-l)+l,t-0.08*(t-b),'F',fontsize=20,ha='left',va='top',
+    l,r = ax[2].get_xlim()
+    b,t = ax[2].get_ylim()
+    ax[2].text(0.04*(r-l)+l,t-0.08*(t-b),'C',fontsize=20,ha='left',va='top',
                backgroundcolor="#d6e1ff")
+    ax[2].set_ylabel('average individual connections')
+    
+    
+    
     plt.tight_layout()
     fig.savefig(os.getcwd()+"/figures/"+figname+".png", dpi=600)
     fig.savefig(os.getcwd()+"/figures/"+figname+".svg")
@@ -439,7 +396,7 @@ if savearr[0]==1:
 # =============================================================================
 if savearr[1]==1:
     # melt=pd.melt(df,value_vars=["Nlh","Nhh","Nll"],id_vars=["Publication year"]+fund)
-    figname="F3_4-FnoF"
+    figname="F3_resub"
     temp=df.loc[df["Publication year"]<2021,["Publication year","Nlh","Nhh","Nll"]+fund]# avoid 2021 cus incomplete
     
     temp['idx']=np.arange(0,len(temp));
@@ -522,9 +479,7 @@ if savearr[1]==1:
     handles, labels = ax.get_legend_handles_labels()
     ax.legend(handles=handles[0:], labels=labels[0:],loc=8,
               bbox_to_anchor=(0.5,-0.20),ncol=2)
-    ax.set_xticklabels([r'$\overline{n}_{l,h}$',
-                        r'$\overline{n}_{h,h}$',
-                        r'$\overline{n}_{l,l}$'])
+    ax.set_xticklabels(['LMIC-HIC','HIC-HIC','LMIC-LMIC'])
     
     # ax.set_xticklabels=['$r\bar{n_{l,h}}$','r\n_{h,h}','r\n_{l,l}']
     ax.set_xlabel('')
@@ -613,7 +568,7 @@ if savearr[1]==1:
     # pgov=pg.pairwise_gameshowell(data=temp,dv='Nlh',between='F_Gov',).pval
     sns.barplot(data=temp, x="F_Gov",y="Nlh",#hue="F_Gov",
                 ax=ax1,n_boot=1000,seed=0,order=['Funded','Not Funded'])#,errorbar=('ci,95'))
-    ax1.set_ylabel(r'$\overline{n}_{l,h}$')
+    ax1.set_ylabel('average\nLMIC-HIC connectivity')
     ax1.set_xlabel('Government Funding')
     ax1.set_xticklabels(['',''])
     ax1.legend([],[], frameon=False)
@@ -695,17 +650,17 @@ if savearr[1]==1:
     l,r = ax0.get_xlim()
     b,t = ax0.get_ylim()
     
-    ax0.text(0.03*(r-l)+l,t-0.03*(t-b),'A',fontsize=15,ha='left',va='top',
+    ax0.text(0.03*(r-l)+l,t-0.03*(t-b),'A',fontsize=13,ha='left',va='top',
                backgroundcolor="#d6e1ff")
     
     l,r = ax1.get_xlim()
     b,t = ax1.get_ylim()
-    ax1.text(0.05*(r-l)+l,t-0.05*(t-b),'B',fontsize=15,ha='left',va='top',
+    ax1.text(0.06*(r-l)+l,t-0.05*(t-b),'B',fontsize=13,ha='left',va='top',
                backgroundcolor="#d6e1ff")
     
     l,r = ax2.get_xlim()
     b,t = ax2.get_ylim()
-    ax2.text(0.05*(r-l)+l,t-0.05*(t-b),'C',fontsize=15,ha='left',va='top',
+    ax2.text(0.06*(r-l)+l,t-0.05*(t-b),'C',fontsize=13,ha='left',va='top',
                backgroundcolor="#d6e1ff")
     
     
@@ -722,7 +677,7 @@ if savearr[1]==1:
 # =============================================================================
 if savearr[2]==1:
     
-    figname="F4_1_Fyrs";
+    figname="F4_resub";
     c_Nll="#4ba173";
     c_Nlh="#9900ff";
     c_Nhh="#980000ff";
@@ -731,9 +686,9 @@ if savearr[2]==1:
     #                         figsize=(10,20),sharey='col',
     #                         gridspec_kw={'width_ratios': [1, 1]})
     
-    fig, axd = plt.subplots(ncols=3, nrows=len(fund), sharex='col',
-                            figsize=(20,20),sharey='col',
-                            gridspec_kw={'width_ratios': [1, 1, 0.6]})
+    fig, axd = plt.subplots(ncols=2, nrows=len(fund), sharex='col',
+                            figsize=(10,16),sharey='col',
+                            gridspec_kw={'width_ratios': [1, 1]})
 
 
     for idx,ax in enumerate(axd[:,0]):
@@ -746,9 +701,9 @@ if savearr[2]==1:
             N.loc[i,"Nlh"],N.loc[i,"Nhh"],N.loc[i,"Nll"]=Ncounter(A,lmicbins)
             count.loc[i,"count"] = (df["Publication year"]==i).sum()
         
-        ax.plot(N.index,N.Nlh,'-o',color=c_Nlh,linewidth=1.5,label=r'$N_{l,h}$')
-        ax.plot(N.index,N.Nll,'-o',color=c_Nll,linewidth=1.5,label=r'$N_{l,l}$')
-        ax.plot(N.index,N.Nhh,'-o',color=c_Nhh,linewidth=1.5,label=r'$N_{h,h}$')
+        ax.plot(N.index,N.Nlh,'-o',color=c_Nlh,linewidth=1.5,label='LMIC-HIC')
+        ax.plot(N.index,N.Nll,'-o',color=c_Nll,linewidth=1.5,label='LMIC-LMIC')
+        ax.plot(N.index,N.Nhh,'-o',color=c_Nhh,linewidth=1.5,label='HIC-HIC')
         # ax.legend(loc='upper center',fontsize=16,ncol=3,)
         ax.set_xticks(np.arange(np.min(yrs),np.max(yrs),1),minor=True,
                          color='k',alpha=0.2,linewidth=0.5);
@@ -802,66 +757,66 @@ if savearr[2]==1:
         ax.text(0.05*(r-l)+l,t-0.08*(t-b),letters[idx],fontsize=20,ha='left',va='top',
                    backgroundcolor="#d6e1ff")
         
-    for idx,ax in enumerate(axd[:,2]):
-        temp=df.loc[df[fund[idx]]==1,:]
+    # for idx,ax in enumerate(axd[:,2]):
+    #     temp=df.loc[df[fund[idx]]==1,:]
         
-        adjacency, A = fulladj(temp, Ucountry);
-        G=getarcs(A, Ucountry, lmicbins);
+    #     adjacency, A = fulladj(temp, Ucountry);
+    #     G=getarcs(A, Ucountry, lmicbins);
         
-        pos = nx.get_node_attributes(G,'pos')
-        nx.draw_networkx_nodes(G,pos,node_size=5,ax=ax,node_color='k')
-        weights=list(nx.get_edge_attributes(G,'weight').values())
-        edgeidx=0;
-        maxwt=17;
+    #     pos = nx.get_node_attributes(G,'pos')
+    #     nx.draw_networkx_nodes(G,pos,node_size=5,ax=ax,node_color='k')
+    #     weights=list(nx.get_edge_attributes(G,'weight').values())
+    #     edgeidx=0;
+    #     maxwt=17;
         
-        edgeprintorder=np.argsort(weights)
-        edgelist=list(G.edges());
+    #     edgeprintorder=np.argsort(weights)
+    #     edgelist=list(G.edges());
         
-        normweight=weights/np.double(maxwt);# just for visualization relative to max
-        cmap = mpl.cm.get_cmap('magma_r')
-        # camp=mpl.colors.LinearSegmentedColormap()
-        # cmap=sns.color_palette("rocket")
+    #     normweight=weights/np.double(maxwt);# just for visualization relative to max
+    #     cmap = mpl.cm.get_cmap('magma_r')
+    #     # camp=mpl.colors.LinearSegmentedColormap()
+    #     # cmap=sns.color_palette("rocket")
         
-        for idxval in edgeprintorder:
-            edge=edgelist[idxval]
+    #     for idxval in edgeprintorder:
+    #         edge=edgelist[idxval]
             
-            source, target = edge
-            if lmicbins.LMICever[edge[1]]==lmicbins.LMICever[edge[0]]: #from same setting
-                rad = 0.7
-            else:
-                rad = 0.05
+    #         source, target = edge
+    #         if lmicbins.LMICever[edge[1]]==lmicbins.LMICever[edge[0]]: #from same setting
+    #             rad = 0.7
+    #         else:
+    #             rad = 0.05
                 
-            arrowprops=dict(arrowstyle="-",
-                            color=cmap(normweight[idxval]),
-                            connectionstyle=f"arc3,rad={rad}",
-                            linestyle= '-',
-                            linewidth=1,# linewidth=np.log(weights[edgeidx])+0.5,
-                            alpha=1,)
-            ax.annotate("",
-                    xy=pos[source],
-                    xytext=pos[target],
-                    arrowprops=arrowprops
-                   )
+    #         arrowprops=dict(arrowstyle="-",
+    #                         color=cmap(normweight[idxval]),
+    #                         connectionstyle=f"arc3,rad={rad}",
+    #                         linestyle= '-',
+    #                         linewidth=1,# linewidth=np.log(weights[edgeidx])+0.5,
+    #                         alpha=1,)
+    #         ax.annotate("",
+    #                 xy=pos[source],
+    #                 xytext=pos[target],
+    #                 arrowprops=arrowprops
+    #                )
         
-        norm = mpl.colors.Normalize(vmin=0,vmax=maxwt)
+    #     norm = mpl.colors.Normalize(vmin=0,vmax=maxwt)
         
-        ax.set_title(fund_true[idx])
-        ax.set_aspect('equal');
-        ax.patch.set_facecolor('gray')
+    #     ax.set_title(fund_true[idx])
+    #     ax.set_aspect('equal');
+    #     ax.patch.set_facecolor('gray')
 
-    letters=['A3','B3','C3','D3','E3'];
-    for idx,ax in enumerate(axd[:,2]):
-        l,r = ax.get_xlim()
-        b,t = ax.get_ylim()
-        ax.text(0.03*(r-l)+l,t-0.08*(t-b),letters[idx],fontsize=20,ha='left',va='top',)
-        ax.text(0.01*(r-l)+l,t-0.99*(t-b),'HIC',fontsize=16,ha='left',va='bottom',)
-        ax.text(0.99*(r-l)+l,t-0.99*(t-b),'LMIC',fontsize=16,ha='right',va='bottom',)
+    # letters=['A3','B3','C3','D3','E3'];
+    # for idx,ax in enumerate(axd[:,2]):
+    #     l,r = ax.get_xlim()
+    #     b,t = ax.get_ylim()
+    #     ax.text(0.03*(r-l)+l,t-0.08*(t-b),letters[idx],fontsize=20,ha='left',va='top',)
+    #     ax.text(0.01*(r-l)+l,t-0.99*(t-b),'HIC',fontsize=16,ha='left',va='bottom',)
+    #     ax.text(0.99*(r-l)+l,t-0.99*(t-b),'LMIC',fontsize=16,ha='right',va='bottom',)
         
-        if idx==4:
-            cax = plt.axes([0.75, 0.08, 0.15, 0.02])
-            mpl.colorbar.ColorbarBase(cax,cmap=cmap,norm=norm,orientation='horizontal')
-            cax.tick_params(labelsize=16)
-            cax.set_title('total coauthorship connections')
+    #     if idx==4:
+    #         cax = plt.axes([0.75, 0.08, 0.15, 0.02])
+    #         mpl.colorbar.ColorbarBase(cax,cmap=cmap,norm=norm,orientation='horizontal')
+    #         cax.tick_params(labelsize=16)
+    #         cax.set_title('total coauthorship connections')
         
    
     fig.savefig(os.getcwd()+"/figures/"+figname+".png", dpi=600)
@@ -875,7 +830,7 @@ if savearr[2]==1:
 
 if savearr[3]==1:
     
-    figname="F5_2_Connectome";
+    figname="F5_resub";
     
     fig, axd = plt.subplots(ncols=4, nrows=4,figsize=(18,20),
                             gridspec_kw={'width_ratios': [1, 1, 1,0.1]})
@@ -1039,12 +994,12 @@ if savearr[3]==1:
     cax.tick_params(labelsize=16)
     cax.set_ylabel('total yearly coauthorship connections',fontsize=18)
     
-    sns.heatmap(hic[hm.columns],yticklabels=hic.index,ax=row3,square=False,
+    sns.heatmap(hic[hm.columns[-16:]],yticklabels=hic.index,ax=row3,square=False,
                 cbar=False,cmap=cmap,vmin=0,vmax=highest);
     row3.tick_params(axis='x', labelsize=15,rotation=45)
     row3.tick_params(axis='y', labelsize=15)
     
-    sns.heatmap(lmic[hm.columns],yticklabels=lmic.index,ax=row4,square=False,
+    sns.heatmap(lmic[hm.columns[-16:]],yticklabels=lmic.index,ax=row4,square=False,
                 cbar=False,cmap=cmap,vmin=0,vmax=highest,);
     row4.tick_params(axis='y', labelsize=15)
     row4.tick_params(axis='x', labelsize=15,rotation=45)
